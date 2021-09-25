@@ -28,16 +28,17 @@ class parking_lot{
   // Creating Min Heap which will help us to allot nearest slots
   priority_queue<int,vector<int>,greater<int>>available_slots;
   // Keeping record of the allocated slots
+  // Using map to keep record of the parked cars according to their incomming times
   map<int,map<string,int>>allocated_slots;
   unordered_map<string,int>registered_slots;
 
   public:
 
   parking_lot(){
-
+    // Default Constructor
   }
 
-  // Initializing our parking lot of size n with default car and pushing each slot no in available slots
+  // Initializing our parking lot of size n with default car and making each slot number available
   parking_lot(int n){
 
     car default_car= car();
@@ -70,11 +71,12 @@ class parking_lot{
   }
 
   void remove_car_from(int slot_no){
-    // If slot number is greater than our parking lot size then it will print error message
-    if(slot_no>slots.size()){
+    // If slot number is 0 or greater than our parking lot size then print error message
+    if(slot_no==0 || slot_no>slots.size()){
       cout<<"Invalid slot !"<<endl;
       return;
     }
+
     // If slot is empty
     if(slots[slot_no-1].driver_age==-1){
       cout<<"Already empty !"<<endl;
@@ -100,7 +102,8 @@ class parking_lot{
   }
 
   void get_Vehicle_registration_number_for_driver_of_age(int age){
-    // If there are no drivers parked in parking lot of the mentioned age 
+
+    // If there are no cars parked in parking lot by driver of mentioned age 
     if(allocated_slots.find(age)==allocated_slots.end()){
       cout<<"No drivers available of this age !"<<endl;
       return;
@@ -109,7 +112,7 @@ class parking_lot{
     // Printing registration id's of cars having driver of given age
     bool first_element=true;
     for(auto reg_id:allocated_slots[age]){
-      // If only car is present then we dont have to put comma
+      // If only one car is present then we dont have to put comma
       if(first_element){
         cout<<reg_id.first;
         first_element=false;
@@ -123,7 +126,7 @@ class parking_lot{
   }
 
   void get_Slot_number_for_car_with_number(string reg_id){
-    // If the mentioned registration id is not present in our database
+    // If there is no car parked with the mentioned registration id
     if(registered_slots.find(reg_id)==registered_slots.end()){
       cout<<"No car present of this registration id !"<<endl;
       return;
@@ -133,6 +136,7 @@ class parking_lot{
   }
 
   void get_Slot_numbers_for_driver_of_age(int age){
+    
     // If no car is parked in parking lot by the drivers of mentioned age
     if(allocated_slots.find(age)==allocated_slots.end()){
       cout<<"No drivers available of this age !"<<endl;
@@ -225,10 +229,10 @@ vector<string>extract_command(string s){
 
 int main() {
   
-  // Declaring an empty parking lot
+  // Declaring a parking lot
   parking_lot p;
 
-  // Reading input from sample_tc_input.txt
+  // Reading input from input.txt
 
   fstream newfile;
   newfile.open("input.txt",ios::in);
